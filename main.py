@@ -58,7 +58,10 @@ class MusicBox(commands.Cog):
         if ctx.voice_client is None:
            return await ctx.send("先使用.join")
         # print(music_kwords)
-        ids = netease_dl.search(music_kwords)
+        if re.match("^(https|http)://music.163.com\W+song\?id=", music_kwords) != None:
+            ids = (music_kwords[music_kwords.find('id=')+3:],)
+        else:
+            ids = netease_dl.search(music_kwords)
         if ids == None:
             embed = discord.Embed(title="Not Found", description="找不到这首歌", color=0xeee657)
             return await ctx.send(embed=embed)
